@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <title>首页</title>
+
+        <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css" rel="stylesheet"/>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <style>
+            body
+            {
+                margin-top: 20px;
+            }
+            .title
+            {
+                color: red;
+                font: bold;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div class="container">
+            <form method="post">
+
+                <div class="form-group">
+                    <label class="title" for="filePath">文件路径</label>
+                    <input type="text" class="form-control" id="filePath" placeholder="文件的完整路径" required>
+                </div>
+                <div class="form-group">
+                    <label class="title">文件中的数据类型</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="type" id="cm" value="true" checked>
+                        <label class="form-check-label" for="cm">cm</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="type" id="angle" value="false">
+                        <label class="form-check-label" for="angle">角度</label>
+                    </div>
+                </div>
+
+                <button id="btn" type="submit" class="btn btn-primary">提交</button>
+            </form>
+        </div>
+
+        <script>
+            let btn = $('#btn');
+
+            btn.click
+            (
+                function (even)
+                {
+                    even.preventDefault();
+                    sendData();
+                }
+            );
+
+            function sendData()
+            {
+                let filePath = $('#filePath').val();
+                if (filePath == 'undefined' || filePath == '')
+                {
+                    alert('文件路径不能为空');
+                    return;
+                }
+                let isCm = $('input[name=type]:checked').val();
+                let url = '/calc?filePath=' + filePath + '&isCm=' + isCm;
+
+                $.ajax
+                (
+                    {
+                        url : url,
+                        type : 'PUT',
+                        dataType : 'json',
+                        success : function (res)
+                        {
+                            if (res.success)
+                            {
+                                alert(res.data);
+                            }
+                            else
+                            {
+                                alert(res.msg);
+                            }
+                        },
+                        error : function ()
+                        {
+                            alert('请求失败');
+                        }
+                    }
+                );
+            }
+        </script>
+
+    </body>
+
+</html>
