@@ -17,8 +17,8 @@
     <groupId>com.lyx</groupId>
     <artifactId>wzw_calc_two</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>王紫薇计算程序第二个</name>
-    <description>wzw_calc_two</description>
+    <name>wzw_calc_two</name>
+    <description>王此薇计算程序第二个</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -47,6 +47,12 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>5.8.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.3</version>
         </dependency>
 
     </dependencies>
