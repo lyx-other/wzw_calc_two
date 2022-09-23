@@ -8,6 +8,7 @@ import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
 import com.lyx.common.CommonResult;
 import com.lyx.entity.ExcelModel;
 import org.springframework.stereotype.Service;
@@ -32,9 +33,11 @@ public class FunService
         List<ExcelModel> excelData = this.readData(filePath, isCm);
 
         // 进行计算
-        excelData.forEach(el -> this.calc(el, isCm));
+        List<String> resultList = excelData.stream().map(el -> calc(el, isCm)).collect(Collectors.toList());
 
-        return CommonResult.successData("完成");
+        // 将数据写入文件
+        this.writeData(filePath, resultList);
+        return CommonResult.successData(StrUtil.format("修改完成，请查看文件：「{}」.", filePath));
     }
 
     /**
@@ -117,5 +120,21 @@ public class FunService
             numberList.set(numberList.size()-1, 50);
         }
         return numberList.stream().map(StrUtil::toString).collect(Collectors.joining(", "));
+    }
+
+    /**
+     * 将结果写入excel文件
+     * @param filePath   文件地址
+     * @param resultList 结果集
+     */
+    private void writeData(String filePath, List<String> resultList)
+    {
+        ExcelWriter writer = ExcelUtil.getWriter(filePath);
+        writer.writeCellValue(2, 0, "需要采集的帧");
+        for (int i = 0; i <= resultList.size()-1; i++)
+        {
+            writer.writeCellValue(2, i+1, resultList.get(i));
+        }
+        writer.close();
     }
 }
