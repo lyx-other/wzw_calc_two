@@ -5,6 +5,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import com.lyx.common.CommonResult;
@@ -97,6 +98,24 @@ public class FunService
         BigDecimal stepSize = BigDecimal.valueOf(50).divide(count, 5, RoundingMode.HALF_EVEN);
         int stepSizeRound = NumberUtil.round(stepSize, 0, RoundingMode.CEILING).intValue();
 
-        return null;
+        // 计算帧
+        if (stepSizeRound >= 50)
+        {
+            return "间隔大于等于50";
+        }
+        List<Integer> numberList = CollUtil.newArrayList();
+        for (int i=1; i<=60; i=i+stepSizeRound)
+        {
+            numberList.add(i);
+            if (i >= 50)
+            {
+                break;
+            }
+        }
+        if (CollUtil.getLast(numberList) != 50)
+        {
+            numberList.set(numberList.size()-1, 50);
+        }
+        return numberList.stream().map(StrUtil::toString).collect(Collectors.joining(", "));
     }
 }
