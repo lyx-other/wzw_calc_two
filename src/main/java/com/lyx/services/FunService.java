@@ -59,7 +59,7 @@ public class FunService
                                             .collect(Collectors.toList());
         if (isCm)
         {
-            secondColumn.stream().map(el -> el.divide(BigDecimal.valueOf(100), 5, RoundingMode.HALF_DOWN));
+            secondColumn = secondColumn.stream().map(el -> el.divide(BigDecimal.valueOf(100), 5, RoundingMode.HALF_DOWN)).collect(Collectors.toList());
         }
         reader.close();
         Assert.isTrue(firstColumn.size()==secondColumn.size(), "数据两列数目不一致");
